@@ -1,0 +1,100 @@
+.home-page {
+  min-height: 100vh;
+  background: #1e1e3a;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+/* floating bg dice */
+.bg-dice {
+  position: fixed; font-size: 120px; opacity: 0.04;
+  color: #f5c842; pointer-events: none; user-select: none;
+}
+.d1 { top: 5%;  left: 3%;  animation: floatA 7s ease infinite; }
+.d2 { top: 10%; right: 4%; animation: floatB 9s ease infinite; }
+.d3 { bottom: 8%; left: 6%; animation: floatA 11s ease infinite 2s; }
+.d4 { bottom: 5%; right: 3%; animation: floatB 8s ease infinite 1s; }
+@keyframes floatA { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-20px) rotate(15deg)} }
+@keyframes floatB { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(20px) rotate(-12deg)} }
+
+.home-card {
+  position: relative; z-index: 1;
+  background: rgba(14,17,23,0.92);
+  border: 1px solid #2a2f42;
+  border-radius: 20px;
+  padding: 44px 48px;
+  width: 100%; max-width: 460px;
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.6), 0 0 60px rgba(245,200,66,0.05);
+  backdrop-filter: blur(10px);
+}
+
+/* mini board logo */
+.home-logo { display:flex; flex-direction:column; align-items:center; gap:10px; }
+.logo-board {
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+  width: 72px; height: 72px; border-radius: 10px; overflow: hidden;
+  position: relative; border: 2px solid #2a2f42;
+}
+.lb-corner { width:100%; height:100%; }
+.lb-corner.red    { background:#c0392b; }
+.lb-corner.blue   { background:#2980b9; order:2; }
+.lb-corner.green  { background:#27ae60; order:3; }
+.lb-corner.yellow { background:#d4a017; order:4; }
+.lb-center {
+  position: absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-size: 28px; color: #f5c842;
+  text-shadow: 0 0 20px rgba(245,200,66,0.6);
+  filter: drop-shadow(0 0 8px rgba(245,200,66,0.4));
+}
+
+.home-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 30px; font-weight: 900; letter-spacing: 4px;
+  background: linear-gradient(135deg, #c9973a, #f5c842, #ffe580, #f5c842, #c9973a);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.home-sub {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px; letter-spacing: 5px; color: #4a4870; text-transform: uppercase;
+}
+
+.color-bar {
+  display: flex; gap: 6px; width: 100%;
+}
+.color-bar div { flex: 1; height: 4px; border-radius: 2px; opacity: 0.7; }
+
+.home-form { width:100%; display:flex; flex-direction:column; gap:12px; }
+.home-label {
+  font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase; color: #7a7898;
+}
+.home-input {
+  width: 100%; background: #0a0c14; border: 2px solid #2a2f42; border-radius: 10px;
+  padding: 14px 18px; color: #f0ece0;
+  font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.5px;
+}
+.home-input:focus { border-color: #f5c842; box-shadow: 0 0 20px rgba(245,200,66,0.15); }
+.home-input::placeholder { color: #3a3858; font-weight: 400; font-size: 16px; }
+.home-input.shake { animation: shake 0.4s ease; border-color: #e74c3c; }
+@keyframes shake {
+  0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)}
+  60%{transform:translateX(-6px)} 80%{transform:translateX(6px)}
+}
+
+.home-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 15px; border: none; border-radius: 10px; cursor: pointer;
+  font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 800;
+  letter-spacing: 1px; text-transform: uppercase;
+  background: linear-gradient(135deg, #c9973a, #f5c842, #ffe580);
+  color: #1a1200;
+  box-shadow: 0 6px 24px rgba(245,200,66,0.3);
+  transition: all 0.2s;
+}
+.home-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(245,200,66,0.45); }
+.home-btn:active { transform: scale(0.97); }
+
+.home-hint { font-size: 12px; color: #3a3858; text-align: center; font-family: 'Rajdhani', sans-serif; }
