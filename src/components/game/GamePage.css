@@ -1,380 +1,295 @@
-/* ── Root ── */
+/* ═══════════════════════════════════════════
+   ROOT — locks to viewport, no scroll
+═══════════════════════════════════════════ */
 .gp-root {
-  height: 100vh;
-  background: #1e1e3a;
+  position: fixed;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  font-family: "Exo 2", sans-serif;
   overflow: hidden;
+  background: linear-gradient(160deg, #1e2235 0%, #252840 100%);
+  font-family: "Exo 2", "Segoe UI", sans-serif;
 }
 
-/* ── Toast ── */
-.gp-toast {
-  position: fixed;
-  top: 64px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 400;
-  padding: 9px 28px;
-  border-radius: 24px;
-  font-family: "Rajdhani", sans-serif;
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: 0.4px;
-  pointer-events: none;
-  white-space: nowrap;
-  animation: fadeIn 0.25s ease;
-}
-.toast-success {
-  background: rgba(26, 190, 60, 0.18);
-  border: 1px solid rgba(26, 190, 60, 0.5);
-  color: #1abe3c;
-}
-.toast-capture {
-  background: rgba(232, 39, 26, 0.18);
-  border: 1px solid rgba(232, 39, 26, 0.5);
-  color: #e8271a;
-}
-.toast-warn {
-  background: rgba(245, 201, 10, 0.18);
-  border: 1px solid rgba(245, 201, 10, 0.5);
-  color: #f5c90a;
-}
-.toast-info {
-  background: rgba(26, 143, 232, 0.18);
-  border: 1px solid rgba(26, 143, 232, 0.5);
-  color: #1a8fe8;
-}
-
-/* ── Header ── */
+/* ═══════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════ */
 .gp-header {
+  height: 44px;
+  min-height: 44px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 22px;
+  padding: 0 12px;
   background: rgba(0, 0, 0, 0.3);
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  flex-shrink: 0;
-  z-index: 100;
-}
-
-@media (max-width: 768px) {
-  .gp-header {
-    padding: 8px 16px;
-  }
-  .gp-header .gp-logo {
-    font-size: 13px;
-    letter-spacing: 1px;
-  }
-  .gp-header .gp-turn {
-    font-size: 12px;
-    padding: 3px 12px;
-  }
-  .gp-header .gp-actions {
-    gap: 4px;
-  }
-  .gp-header .gp-chip,
-  .gp-header .gp-leave {
-    font-size: 11px;
-  }
 }
 
 .gp-logo {
-  font-family: "Cinzel Decorative", serif;
-  font-size: 15px;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 3px;
   color: #f5c842;
-  letter-spacing: 2px;
+  white-space: nowrap;
 }
+
 .gp-turn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-family: "Rajdhani", sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 5px 16px;
-  border-radius: 24px;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 20px;
   border: 1.5px solid;
-  background: rgba(255, 255, 255, 0.04);
-}
-.gp-turn-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  animation: pulse 1.4s ease infinite;
-}
-.gp-pick {
+  font-family: "Rajdhani", sans-serif;
   font-size: 12px;
-  opacity: 0.7;
-  font-weight: 600;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 45vw;
 }
+
+.gp-turn-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: pulse 1.3s ease infinite;
+}
+
+.gp-pick {
+  font-size: 10px;
+  opacity: 0.6;
+  margin-left: 3px;
+}
+
 .gp-actions {
   display: flex;
+  gap: 5px;
   align-items: center;
-  gap: 8px;
-}
-.gp-chip {
-  font-family: "Rajdhani", sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 4px 10px;
-  border-radius: 6px;
-}
-.gp-leave {
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
-  color: rgba(255, 255, 255, 0.35);
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  padding: 5px 11px;
-  transition: all 0.2s;
-  font-family: "Rajdhani", sans-serif;
-}
-.gp-leave:hover {
-  border-color: #e8271a;
-  color: #e8271a;
+  flex-shrink: 0;
 }
 
-/* ── Main Container ── */
-.gp-main {
-  flex: 1;
+.gp-chat-btn {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-around;
-  padding: 8px;
-  gap: 8px;
-  overflow: hidden;
+  gap: 3px;
+  border-radius: 7px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: "Rajdhani", sans-serif;
+  border: 1px solid;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-/* ── Board Wrapper ── */
-@media (min-width: 1200px) {
-  .gp-board-outer {
-    width: 420px;
-    height: 420px;
-  }
+.gp-chat-badge {
+  background: #1a8fe8;
+  color: white;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 900;
 }
 
-@media (min-width: 768px) and (max-width: 1199px) {
-  .gp-board-outer {
-    width: 340px;
-    height: 340px;
-  }
+.gp-leave {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 7px;
+  padding: 3px 8px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  font-weight: 700;
+  font-family: "Rajdhani", sans-serif;
+  cursor: pointer;
 }
 
-@media (max-width: 767px) {
-  .gp-board-outer {
-    width: min(85vw, calc(100vh - 180px));
-    height: min(85vw, calc(100vh - 180px));
-  }
-}
-
-.gp-board-outer {
-  padding: 6px;
-  border-radius: 14px;
-  box-shadow:
-    0 0 0 3px #d05a10,
-    0 24px 70px rgba(0, 0, 0, 0.6),
-    0 0 80px rgba(240, 112, 32, 0.15);
+/* ═══════════════════════════════════════════
+   SCORE STRIP
+═══════════════════════════════════════════ */
+.gp-score {
+  height: 30px;
+  min-height: 30px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
+  padding: 0 8px;
+}
+
+.gp-score-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1.5px solid;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════
+   BOARD AREA — fills ALL remaining space
+═══════════════════════════════════════════ */
+.gp-board-area {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+/*
+  KEY FIX: Board is a square that fits the available space.
+  On mobile: nearly full screen width.
+  On desktop: constrained by height so it doesn't overflow.
+*/
+.gp-board-outer {
+  width: min(96vw, calc(100vh - 44px - 30px - 70px - 8px));
+  height: min(96vw, calc(100vh - 44px - 30px - 70px - 8px));
+  background: #f07020;
+  border-radius: 14px;
+  padding: 6px;
+  box-shadow:
+    0 0 0 3px #c05010,
+    0 8px 32px rgba(0, 0, 0, 0.6);
+  flex-shrink: 0;
 }
 
 .gp-board-inner {
   width: 100%;
   height: 100%;
-  border-radius: 10px;
+  border-radius: 9px;
   overflow: hidden;
-  background: white;
-  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.06);
+  background: #a8b0c0;
 }
 
-/* ── Dice Row: ALWAYS HORIZONTAL ── */
+/* ═══════════════════════════════════════════
+   DICE ROW — fixed height below board
+═══════════════════════════════════════════ */
 .gp-dice-row {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: nowrap;
-  width: 100%;
+  height: 70px;
+  min-height: 70px;
   flex-shrink: 0;
-  padding: 0 4px;
-}
-
-/* ── Individual Player Dice Card: NO BORDER ── */
-.pdice-wrap {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 6px;
-  padding: 6px 8px;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  min-width: auto;
-  transition: all 0.25s;
-  cursor: default;
-  flex-shrink: 0;
+  justify-content: space-evenly;
+  padding: 0 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-.pdice-active {
-  background: transparent;
-  border-color: transparent;
-  box-shadow: 0 0 12px color-mix(in srgb, var(--pc) 40%, transparent);
-}
-
-.pdice-rollable {
-  cursor: pointer;
-}
-.pdice-rollable:hover .pdice-face {
-  transform: scale(1.08);
-}
-.pdice-rollable:active .pdice-face {
-  transform: scale(0.95);
-}
-
-/* Label: Hidden */
-.pdice-label {
-  display: none;
-}
-
-.pdice-name {
-  display: none;
-}
-.pdice-home {
-  display: none;
-}
-
-/* Dice Face */
-.pdice-face {
-  position: relative;
-  transition: transform 0.15s;
+/* ═══════════════════════════════════════════
+   CHAT PANEL
+═══════════════════════════════════════════ */
+.gp-chat-panel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 270px;
+  background: rgba(14, 16, 32, 0.98);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
+  box-shadow: -6px 0 28px rgba(0, 0, 0, 0.6);
+  z-index: 300;
+}
+
+.gp-chat-header {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-}
-
-.pdice-face svg {
-  width: 50px;
-  height: 50px;
-}
-
-@keyframes diceShake {
-  0%,
-  100% {
-    transform: rotate(0deg) scale(1);
-  }
-  20% {
-    transform: rotate(-15deg) scale(0.9);
-  }
-  40% {
-    transform: rotate(15deg) scale(1.1);
-  }
-  60% {
-    transform: rotate(-10deg) scale(0.95);
-  }
-  80% {
-    transform: rotate(10deg) scale(1.05);
-  }
-}
-
-.dice-rolling {
-  animation: diceShake 0.4s ease infinite;
-}
-
-/* Tap Hint */
-.tap-hint {
-  display: none;
-}
-
-.roll-result {
   font-family: "Rajdhani", sans-serif;
-  font-size: 18px;
-  font-weight: 900;
-  line-height: 1;
-  margin-left: 4px;
-  color: inherit;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #e0dce8;
 }
 
-/* Token Dots */
-.pdice-tokens {
-  display: none;
-}
-.pdt {
-  display: none;
-}
-.pdt-yard {
-  display: none;
-}
-.pdt-board {
-  display: none;
-}
-.pdt-done {
-  display: none;
+.gp-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-/* ── Emoji Decoration ── */
-.dice-emoji {
-  font-size: 32px;
-  line-height: 1;
-  margin-left: 0;
+.gp-quick-msgs {
+  padding: 5px 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
 }
 
-/* ── Small Mobile (≤480px) ── */
-@media (max-width: 480px) {
-  .gp-header {
-    padding: 6px 12px;
-  }
-
-  .gp-logo {
-    font-size: 12px;
-  }
-
-  .gp-turn {
-    font-size: 11px;
-    padding: 2px 10px;
-  }
-
-  .gp-chip,
-  .gp-leave {
-    font-size: 10px;
-    padding: 3px 8px;
-  }
-
-  .pdice-wrap {
-    gap: 4px;
-    padding: 4px 6px;
-  }
-
-  .pdice-face svg {
-    width: 40px;
-    height: 40px;
-  }
-
-  .roll-result {
-    font-size: 14px;
-  }
-
-  .dice-emoji {
-    font-size: 24px;
-  }
+.gp-quick-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 3px 7px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: "Exo 2", sans-serif;
 }
 
-/* ── Animations ── */
-@keyframes fadeIn {
+.gp-chat-input-row {
+  padding: 7px 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  gap: 6px;
+}
+
+.gp-chat-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 7px 10px;
+  color: #f0ece0;
+  font-size: 12px;
+  outline: none;
+  font-family: "Exo 2", sans-serif;
+}
+
+.gp-chat-send {
+  background: linear-gradient(135deg, #c9973a, #f5c842);
+  border: none;
+  border-radius: 8px;
+  padding: 7px 13px;
+  font-weight: 800;
+  font-size: 14px;
+  color: #1a1200;
+  cursor: pointer;
+  font-family: "Rajdhani", sans-serif;
+}
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════ */
+@keyframes fadeUp {
   from {
     opacity: 0;
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
+    transform: none;
   }
 }
 
@@ -384,410 +299,97 @@
     opacity: 1;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.45;
   }
 }
 
-.gp-header .gp-chip,
-.gp-header .gp-leave {
-  font-size: 11px;
-}
-
-.gp-logo {
-  font-family: "Cinzel Decorative", serif;
-  font-size: 15px;
-  color: #f5c842;
-  letter-spacing: 2px;
-}
-.gp-turn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: "Rajdhani", sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 5px 16px;
-  border-radius: 24px;
-  border: 1.5px solid;
-  background: rgba(255, 255, 255, 0.04);
-}
-.gp-turn-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  animation: pulse 1.4s ease infinite;
-}
-.gp-pick {
-  font-size: 12px;
-  opacity: 0.7;
-  font-weight: 600;
-}
-.gp-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.gp-chip {
-  font-family: "Rajdhani", sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 4px 10px;
-  border-radius: 6px;
-}
-.gp-leave {
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
-  color: rgba(255, 255, 255, 0.35);
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  padding: 5px 11px;
-  transition: all 0.2s;
-  font-family: "Rajdhani", sans-serif;
-}
-.gp-leave:hover {
-  border-color: #e8271a;
-  color: #e8271a;
-}
-
-/* ── Main Container ── */
-.gp-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  padding: 8px;
-  gap: 8px;
-  overflow: hidden;
-}
-
-/* ── Board Wrapper ── */
-.gp-board-outer {
-  padding: 8px;
-  border-radius: 14px;
-  box-shadow:
-    0 0 0 3px #d05a10,
-    0 24px 70px rgba(0, 0, 0, 0.6),
-    0 0 80px rgba(240, 112, 32, 0.15);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.gp-board-inner {
-  border-radius: 10px;
-  overflow: hidden;
-  background: white;
-  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.06);
-}
-
-/* All devices: Vertical layout with large board and horizontal dice */
-@media (min-width: 1200px) {
-  .gp-board-outer {
-    width: 420px;
-    height: 420px;
-    padding: 7px;
-    flex-shrink: 0;
+@keyframes popIn {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
 }
 
-@media (min-width: 768px) and (max-width: 1199px) {
-  .gp-board-outer {
-    width: 340px;
-    height: 340px;
-    padding: 6px;
-  }
-}
-
-@media (max-width: 767px) {
-  .gp-board-outer {
-    width: min(85vw, calc(100vh - 180px));
-    height: min(85vw, calc(100vh - 180px));
-    padding: 5px;
-  }
-}
-
-.gp-board-outer {
-  border-radius: 14px;
-  box-shadow:
-    0 0 0 3px #d05a10,
-    0 24px 70px rgba(0, 0, 0, 0.6),
-    0 0 80px rgba(240, 112, 32, 0.15);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.gp-board-inner {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  background: white;
-  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.06);
-}
-
-/* ── Dice Row: ALWAYS HORIZONTAL ── */
-.gp-dice-row {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: nowrap;
-  width: 100%;
-  flex-shrink: 0;
-}
-
-/* ── Individual Player Dice Card: NO BORDER ── */
-.pdice-wrap {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 8px;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  min-width: auto;
-  transition: all 0.25s;
-  cursor: default;
-  flex-shrink: 0;
-}
-
-.pdice-active {
-  background: transparent;
-  border-color: transparent;
-  box-shadow: 0 0 12px color-mix(in srgb, var(--pc) 40%, transparent);
-}
-
-.pdice-rollable {
-  cursor: pointer;
-}
-.pdice-rollable:hover .pdice-face {
-  transform: scale(1.08);
-}
-.pdice-rollable:active .pdice-face {
-  transform: scale(0.95);
-}
-
-/* Label: Hidden for horizontal layout */
-.pdice-label {
-  display: none;
-}
-
-.pdice-name {
-  display: none;
-}
-
-.pdice-home {
-  display: none;
-}
-
-/* Dice Face */
-.pdice-face {
-  position: relative;
-  transition: transform 0.15s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.pdice-face svg {
-  width: 50px;
-  height: 50px;
-}
-
-@keyframes diceShake {
+@keyframes diceBounce {
   0%,
   100% {
     transform: rotate(0deg) scale(1);
   }
-  20% {
-    transform: rotate(-15deg) scale(0.9);
+  25% {
+    transform: rotate(-22deg) scale(0.85);
   }
-  40% {
-    transform: rotate(15deg) scale(1.1);
-  }
-  60% {
-    transform: rotate(-10deg) scale(0.95);
-  }
-  80% {
-    transform: rotate(10deg) scale(1.05);
+  75% {
+    transform: rotate(22deg) scale(1.12);
   }
 }
 
-.dice-rolling {
-  animation: diceShake 0.4s ease infinite;
-}
-
-/* Tap Hint: Hidden */
-.tap-hint {
-  display: none;
-}
-
-.roll-result {
-  font-family: "Rajdhani", sans-serif;
-  font-size: 18px;
-  font-weight: 900;
-  line-height: 1;
-  margin-top: 2px;
-  color: inherit;
-}
-
-/* Token Dots: Hidden for horizontal layout */
-.pdice-tokens {
-  display: none;
-}
-
-.pdt {
-  display: none;
-}
-
-.pdt-yard {
-  display: none;
-}
-.pdt-board {
-  display: none;
-}
-.pdt-done {
-  display: none;
-}
-
-/* ── Emoji Decoration ── */
-.dice-emoji {
-  font-size: 32px;
-  line-height: 1;
-  margin-left: 4px;
-}
-
-.dice-rolling {
-  animation: diceShake 0.4s ease infinite;
-}
-
-/* Tap Hint: Hidden */
-.tap-hint {
-  display: none;
-}
-
-.roll-result {
-  font-family: "Rajdhani", sans-serif;
-  font-size: 18px;
-  font-weight: 900;
-  line-height: 1;
-  margin-top: 2px;
-  color: inherit;
-}
-
-/* Token Dots: Hidden for horizontal layout */
-.pdice-tokens {
-  display: none;
-}
-
-.pdt {
-  width: 12px;
-  height: 12px;
-  border: 2px solid var(--pc);
-  border-radius: 50%;
-}
-
-.pdt-yard {
-  opacity: 0.35;
-}
-.pdt-board {
-  opacity: 0.8;
-  box-shadow: 0 0 5px var(--pc);
-}
-.pdt-done {
-  opacity: 1;
-  box-shadow: 0 0 8px var(--pc);
-}
-
-/* ── Emoji Decoration ── */
-.dice-emoji {
-  font-size: 32px;
-  line-height: 1;
-  margin-left: 4px;
-
-  font-size: 10px;
-  padding: 3px 8px;
-}
-
-.pdice-wrap {
-  min-width: 70px;
-  padding: 8px 10px 6px;
-}
-
-.pdice-wrap svg {
-  width: 45px;
-  height: 45px;
-}
-
-.pdice-name {
-  font-size: 11px;
-}
-
-.pdice-face svg {
-  width: 40px;
-  height: 40px;
-}
-
-.roll-result {
-  font-size: 14px;
-}
-
-.dice-emoji {
-  font-size: 24px;
-}
-.pdt-yard {
-  opacity: 0.35;
-}
-.pdt-board {
-  opacity: 0.8;
-  box-shadow: 0 0 5px var(--pc);
-}
-.pdt-done {
-  opacity: 1;
-  box-shadow: 0 0 8px var(--pc);
-}
-
-/* ── Responsive ── */
-@media (max-width: 540px) {
-  .gp-board-outer {
-    padding: 7px;
-    border-radius: 12px;
+/* ═══════════════════════════════════════════
+   RESPONSIVE — Mobile first
+═══════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .gp-header {
+    height: 40px;
+    min-height: 40px;
+    padding: 0 8px;
   }
-  .pdice-wrap {
-    min-width: 72px;
-    padding: 7px 8px 6px;
+  .gp-logo {
+    font-size: 13px;
+    letter-spacing: 2px;
   }
-  .pdice-wrap svg {
-    width: 50px;
-    height: 50px;
-  }
-  .pdice-name {
+  .gp-turn {
     font-size: 11px;
+    padding: 2px 8px;
+    max-width: 40vw;
+  }
+  .gp-score {
+    height: 26px;
+    min-height: 26px;
+    gap: 4px;
+  }
+  .gp-score-chip {
+    font-size: 10px;
+    padding: 1px 6px;
   }
   .gp-dice-row {
-    gap: 7px;
+    height: 64px;
+    min-height: 64px;
+  }
+
+  /* Board fills almost full width on small phones */
+  .gp-board-outer {
+    width: min(98vw, calc(100vh - 40px - 26px - 64px - 8px));
+    height: min(98vw, calc(100vh - 40px - 26px - 64px - 8px));
+    padding: 5px;
+    border-radius: 12px;
+  }
+
+  .gp-chat-panel {
+    width: 100vw;
   }
 }
-/* { 
- lay: flex;
-  gap: 5px;
-  flex-direction: column;
-  align-items: center;
-} */
-.pdt {
-  width: 12px;
-  height: 12px;
-  border: 2px solid var(--pc);
-  border-radius: 50%;
+
+@media (max-width: 360px) {
+  .gp-turn {
+    max-width: 35vw;
+    font-size: 10px;
+  }
+  .gp-chat-btn {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+}
+
+/* Desktop — give board a max size so it doesn't get enormous */
+@media (min-width: 769px) {
+  .gp-board-outer {
+    width: min(600px, calc(100vh - 44px - 30px - 70px - 16px));
+    height: min(600px, calc(100vh - 44px - 30px - 70px - 16px));
+  }
 }
