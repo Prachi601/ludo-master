@@ -1,288 +1,4 @@
-/* ═══════════════════════════════════════════
-   ROOT — locks to viewport, no scroll
-═══════════════════════════════════════════ */
-.gp-root {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: linear-gradient(160deg, #1e2235 0%, #252840 100%);
-  font-family: "Exo 2", "Segoe UI", sans-serif;
-}
-
-/* ═══════════════════════════════════════════
-   HEADER
-═══════════════════════════════════════════ */
-.gp-header {
-  height: 44px;
-  min-height: 44px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  background: rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.gp-logo {
-  font-family: "Rajdhani", sans-serif;
-  font-size: 16px;
-  font-weight: 900;
-  letter-spacing: 3px;
-  color: #f5c842;
-  white-space: nowrap;
-}
-
-.gp-turn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 3px 10px;
-  border-radius: 20px;
-  border: 1.5px solid;
-  font-family: "Rajdhani", sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 45vw;
-}
-
-.gp-turn-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  animation: pulse 1.3s ease infinite;
-}
-
-.gp-pick {
-  font-size: 10px;
-  opacity: 0.6;
-  margin-left: 3px;
-}
-
-.gp-actions {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.gp-chat-btn {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  border-radius: 7px;
-  padding: 3px 8px;
-  font-size: 11px;
-  font-weight: 700;
-  font-family: "Rajdhani", sans-serif;
-  border: 1px solid;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.gp-chat-badge {
-  background: #1a8fe8;
-  color: white;
-  border-radius: 50%;
-  width: 14px;
-  height: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 8px;
-  font-weight: 900;
-}
-
-.gp-leave {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 7px;
-  padding: 3px 8px;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 11px;
-  font-weight: 700;
-  font-family: "Rajdhani", sans-serif;
-  cursor: pointer;
-}
-
-/* ═══════════════════════════════════════════
-   SCORE STRIP
-═══════════════════════════════════════════ */
-.gp-score {
-  height: 30px;
-  min-height: 30px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 0 8px;
-}
-
-.gp-score-chip {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  border: 1.5px solid;
-  font-family: "Rajdhani", sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-/* ═══════════════════════════════════════════
-   BOARD AREA — fills ALL remaining space
-═══════════════════════════════════════════ */
-.gp-board-area {
-  flex: 1 1 0;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-}
-
-/*
-  KEY FIX: Board is a square that fits the available space.
-  On mobile: nearly full screen width.
-  On desktop: constrained by height so it doesn't overflow.
-*/
-.gp-board-outer {
-  width: min(96vw, calc(100vh - 44px - 30px - 70px - 8px));
-  height: min(96vw, calc(100vh - 44px - 30px - 70px - 8px));
-  background: #f07020;
-  border-radius: 14px;
-  padding: 6px;
-  box-shadow:
-    0 0 0 3px #c05010,
-    0 8px 32px rgba(0, 0, 0, 0.6);
-  flex-shrink: 0;
-}
-
-.gp-board-inner {
-  width: 100%;
-  height: 100%;
-  border-radius: 9px;
-  overflow: hidden;
-  background: #a8b0c0;
-}
-
-/* ═══════════════════════════════════════════
-   DICE ROW — fixed height below board
-═══════════════════════════════════════════ */
-.gp-dice-row {
-  height: 70px;
-  min-height: 70px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  padding: 0 12px;
-  background: rgba(0, 0, 0, 0.25);
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-/* ═══════════════════════════════════════════
-   CHAT PANEL
-═══════════════════════════════════════════ */
-.gp-chat-panel {
-  position: fixed;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 270px;
-  background: rgba(14, 16, 32, 0.98);
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  flex-direction: column;
-  box-shadow: -6px 0 28px rgba(0, 0, 0, 0.6);
-  z-index: 300;
-}
-
-.gp-chat-header {
-  padding: 12px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: "Rajdhani", sans-serif;
-  font-weight: 800;
-  font-size: 14px;
-  letter-spacing: 1px;
-  color: #e0dce8;
-}
-
-.gp-chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.gp-quick-msgs {
-  padding: 5px 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-}
-
-.gp-quick-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  padding: 3px 7px;
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.55);
-  cursor: pointer;
-  white-space: nowrap;
-  font-family: "Exo 2", sans-serif;
-}
-
-.gp-chat-input-row {
-  padding: 7px 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-  display: flex;
-  gap: 6px;
-}
-
-.gp-chat-input {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-  padding: 7px 10px;
-  color: #f0ece0;
-  font-size: 12px;
-  outline: none;
-  font-family: "Exo 2", sans-serif;
-}
-
-.gp-chat-send {
-  background: linear-gradient(135deg, #c9973a, #f5c842);
-  border: none;
-  border-radius: 8px;
-  padding: 7px 13px;
-  font-weight: 800;
-  font-size: 14px;
-  color: #1a1200;
-  cursor: pointer;
-  font-family: "Rajdhani", sans-serif;
-}
-
-/* ═══════════════════════════════════════════
-   ANIMATIONS
-═══════════════════════════════════════════ */
-@keyframes fadeUp {
+/* @keyframes fadeUp {
   from {
     opacity: 0;
     transform: translateY(12px);
@@ -292,7 +8,6 @@
     transform: none;
   }
 }
-
 @keyframes pulse {
   0%,
   100% {
@@ -302,7 +17,6 @@
     opacity: 0.45;
   }
 }
-
 @keyframes popIn {
   0% {
     transform: scale(0.4);
@@ -316,7 +30,6 @@
     opacity: 1;
   }
 }
-
 @keyframes diceBounce {
   0%,
   100% {
@@ -328,68 +41,20 @@
   75% {
     transform: rotate(22deg) scale(1.12);
   }
-}
+} */
 
-/* ═══════════════════════════════════════════
-   RESPONSIVE — Mobile first
-═══════════════════════════════════════════ */
-@media (max-width: 480px) {
-  .gp-header {
-    height: 40px;
-    min-height: 40px;
-    padding: 0 8px;
-  }
-  .gp-logo {
-    font-size: 13px;
-    letter-spacing: 2px;
-  }
-  .gp-turn {
-    font-size: 11px;
-    padding: 2px 8px;
-    max-width: 40vw;
-  }
-  .gp-score {
-    height: 26px;
-    min-height: 26px;
-    gap: 4px;
-  }
-  .gp-score-chip {
-    font-size: 10px;
-    padding: 1px 6px;
-  }
-  .gp-dice-row {
-    height: 64px;
-    min-height: 64px;
+@media (max-width: 768px) {
+  .game-board-wrapper {
+    width: 98vw !important;
+    height: auto !important;
   }
 
-  /* Board fills almost full width on small phones */
-  .gp-board-outer {
-    width: min(98vw, calc(100vh - 40px - 26px - 64px - 8px));
-    height: min(98vw, calc(100vh - 40px - 26px - 64px - 8px));
-    padding: 5px;
-    border-radius: 12px;
+  .dice-row {
+    min-height: 80px !important;
+    padding: 6px !important;
   }
 
-  .gp-chat-panel {
-    width: 100vw;
-  }
-}
-
-@media (max-width: 360px) {
-  .gp-turn {
-    max-width: 35vw;
-    font-size: 10px;
-  }
-  .gp-chat-btn {
-    font-size: 10px;
-    padding: 2px 6px;
-  }
-}
-
-/* Desktop — give board a max size so it doesn't get enormous */
-@media (min-width: 769px) {
-  .gp-board-outer {
-    width: min(600px, calc(100vh - 44px - 30px - 70px - 16px));
-    height: min(600px, calc(100vh - 44px - 30px - 70px - 16px));
+  .player-card {
+    min-width: 120px !important;
   }
 }

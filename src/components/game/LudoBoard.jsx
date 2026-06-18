@@ -1,5 +1,3 @@
-//
-
 import React from "react";
 import {
   PATH,
@@ -58,51 +56,6 @@ const YARD = {
   ],
 };
 
-// Dice position inside each quadrant (centre of the quadrant)
-// Each quadrant is 6×6 cells. Dice sits at the centre: row 2.5, col 2.5 within the quadrant
-const DICE_POS = {
-  red: { x: 2.5 * CELL, y: 2.5 * CELL }, // top-left quad centre
-  blue: { x: 9 * CELL + 3.5 * CELL, y: 2.5 * CELL }, // top-right quad centre
-  green: { x: 9 * CELL + 3.5 * CELL, y: 9 * CELL + 3.5 * CELL }, // bottom-right
-  yellow: { x: 2.5 * CELL, y: 9 * CELL + 3.5 * CELL }, // bottom-left
-};
-
-const DICE_SIZE = CELL * 2.2; // dice face size in SVG units
-
-const DOT_LAYOUTS = {
-  1: [[50, 50]],
-  2: [
-    [28, 28],
-    [72, 72],
-  ],
-  3: [
-    [28, 28],
-    [50, 50],
-    [72, 72],
-  ],
-  4: [
-    [28, 28],
-    [72, 28],
-    [28, 72],
-    [72, 72],
-  ],
-  5: [
-    [28, 28],
-    [72, 28],
-    [50, 50],
-    [28, 72],
-    [72, 72],
-  ],
-  6: [
-    [28, 20],
-    [72, 20],
-    [28, 50],
-    [72, 50],
-    [28, 80],
-    [72, 80],
-  ],
-};
-
 function tokenPx(color, pos) {
   if (pos === -1) return null;
   if (pos >= 52) {
@@ -120,168 +73,13 @@ const FINISH_OFFSETS = [
   [10, 10],
 ];
 
-// ── Inline Dice rendered inside the SVG ──────────────────────────
-function InlineDice({
-  color,
-  cx,
-  cy,
-  size,
-  value,
-  rolling,
-  canRoll,
-  onRoll,
-  isActive,
-}) {
-  const hex = Z[color];
-  const half = size / 2;
-  const dots = isActive && value ? DOT_LAYOUTS[value] : [];
-
-  return (
-    <g
-      onClick={canRoll && isActive && !rolling ? onRoll : undefined}
-      style={{ cursor: canRoll && isActive ? "pointer" : "default" }}>
-      {/* Active glow ring */}
-      {isActive && (
-        <rect
-          x={cx - half - 4}
-          y={cy - half - 4}
-          width={size + 8}
-          height={size + 8}
-          rx={size * 0.22}
-          ry={size * 0.22}
-          fill="none"
-          stroke="white"
-          strokeWidth="3"
-          opacity="0">
-          <animate
-            attributeName="opacity"
-            values="0.6;0;0.6"
-            dur="1.1s"
-            repeatCount="indefinite"
-          />
-        </rect>
-      )}
-
-      {/* Dice face background */}
-      <rect
-        x={cx - half}
-        y={cy - half}
-        width={size}
-        height={size}
-        rx={size * 0.18}
-        ry={size * 0.18}
-        fill={isActive ? "#ffffff" : "rgba(255,255,255,0.15)"}
-        stroke={isActive ? hex : "rgba(255,255,255,0.3)"}
-        strokeWidth={isActive ? 3 : 1.5}
-      />
-
-      {/* Rolling state */}
-      {isActive && rolling && (
-        <text
-          x={cx}
-          y={cy + size * 0.18}
-          textAnchor="middle"
-          fontSize={size * 0.55}
-          fill={hex}
-          fontWeight="900"
-          style={{ pointerEvents: "none" }}>
-          ?
-        </text>
-      )}
-
-      {/* Dots */}
-      {isActive &&
-        !rolling &&
-        dots.map(([dx, dy], i) => (
-          <circle
-            key={i}
-            cx={cx - half + (size * dx) / 100}
-            cy={cy - half + (size * dy) / 100}
-            r={size * 0.1}
-            fill={value === 6 ? hex : "#1a1a2e"}
-          />
-        ))}
-
-      {/* Idle state — show dice emoji hint */}
-      {isActive && !rolling && !value && (
-        <text
-          x={cx}
-          y={cy + size * 0.2}
-          textAnchor="middle"
-          fontSize={size * 0.5}
-          style={{ pointerEvents: "none" }}>
-          🎲
-        </text>
-      )}
-
-      {/* Inactive — faded dots pattern */}
-      {!isActive && (
-        <>
-          <circle
-            cx={cx - size * 0.15}
-            cy={cy - size * 0.15}
-            r={size * 0.08}
-            fill="rgba(255,255,255,0.25)"
-          />
-          <circle
-            cx={cx + size * 0.15}
-            cy={cy + size * 0.15}
-            r={size * 0.08}
-            fill="rgba(255,255,255,0.25)"
-          />
-        </>
-      )}
-
-      {/* Rolled value label */}
-      {isActive && value && !rolling && (
-        <text
-          x={cx}
-          y={cy + half + size * 0.32}
-          textAnchor="middle"
-          fontSize={size * 0.32}
-          fontWeight="900"
-          fill={hex}
-          fontFamily="Rajdhani,sans-serif"
-          style={{ pointerEvents: "none" }}>
-          {value}
-        </text>
-      )}
-
-      {/* TAP label when it's your turn */}
-      {isActive && canRoll && !rolling && !value && (
-        <text
-          x={cx}
-          y={cy + half + size * 0.32}
-          textAnchor="middle"
-          fontSize={size * 0.26}
-          fontWeight="900"
-          fill={hex}
-          fontFamily="Rajdhani,sans-serif"
-          opacity="0.9"
-          style={{ pointerEvents: "none" }}>
-          TAP
-          <animate
-            attributeName="opacity"
-            values="0.9;0.3;0.9"
-            dur="1s"
-            repeatCount="indefinite"
-          />
-        </text>
-      )}
-    </g>
-  );
-}
-
+// No dice inside board — board is clean
 export default function LudoBoard({
   tokens,
   players,
   currentTurn,
   movableTokens,
   onTokenClick,
-  diceValue,
-  diceRolling,
-  canRoll,
-  onRoll,
 }) {
   const pColors = players.map((p) => p.color);
   const activeCol = players[currentTurn]?.color;
@@ -302,10 +100,10 @@ export default function LudoBoard({
       viewBox={`0 0 ${S} ${S}`}
       style={{ display: "block", width: "100%", height: "100%" }}
       preserveAspectRatio="xMidYMid meet">
-      {/* 1. Grey background */}
+      {/* 1. Background */}
       <rect width={S} height={S} fill="#a8b0c0" />
 
-      {/* 2. All 4 colored quadrants */}
+      {/* 2. Four colored quadrants */}
       <rect x={0} y={0} width={6 * CELL} height={6 * CELL} fill={Z.red} />
       <rect
         x={9 * CELL}
@@ -630,33 +428,7 @@ export default function LudoBoard({
         opacity=".4"
       />
 
-      {/* ══════════════════════════════════════════════
-          12. DICE — one per player, inside their corner
-          Positioned at centre of each 6×6 quadrant
-      ══════════════════════════════════════════════ */}
-      {["red", "blue", "green", "yellow"].map((color) => {
-        const player = players.find((p) => p.color === color);
-        if (!player) return null;
-        const isActive = activeCol === color;
-        const dp = DICE_POS[color];
-
-        return (
-          <InlineDice
-            key={`dice-${color}`}
-            color={color}
-            cx={dp.x}
-            cy={dp.y}
-            size={DICE_SIZE}
-            value={isActive ? diceValue : null}
-            rolling={isActive && diceRolling}
-            canRoll={isActive && canRoll}
-            isActive={isActive}
-            onRoll={onRoll}
-          />
-        );
-      })}
-
-      {/* 13. On-board tokens (drawn last so they appear on top) */}
+      {/* 12. On-board tokens */}
       {boardToks.map(({ color, idx, tok, movable }) => {
         let TX, TY;
         if (tok.finished) {
