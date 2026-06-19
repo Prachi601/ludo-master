@@ -1,5 +1,6 @@
 import React from "react";
 import { GameProvider, useGame } from "./context/GameContext";
+import ModeSelectPage from "./pages/ModeSelectPage";
 import HomePage from "./pages/HomePage";
 import SetupPage from "./pages/SetupPage";
 import GamePage from "./pages/GamePage";
@@ -12,6 +13,8 @@ function Router() {
   switch (state.screen) {
     case "home":
       return <HomePage />;
+    case "mode":
+      return <ModeSelectPage />;
     case "setup":
       return <SetupPage />;
     case "game":

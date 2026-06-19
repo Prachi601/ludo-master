@@ -360,9 +360,9 @@ export default function GamePage() {
   const animRef = useRef(null);
   const chatEndRef = useRef(null);
 
-  // ── Board now sizes itself to the largest square that fits the
-  // available space, so the orange frame never leaves extra letterboxed
-  // space above/below the board.
+  // ── Board sizes itself to the largest square that fits the available
+  // space, so the orange frame never leaves extra letterboxed space
+  // above/below the board.
   const gameAreaRef = useRef(null);
   const [boardSize, setBoardSize] = useState(320);
 
@@ -372,7 +372,6 @@ export default function GamePage() {
 
     const compute = () => {
       const rect = el.getBoundingClientRect();
-      // subtract a little breathing room for the corner widget rows
       const available = Math.min(rect.width, rect.height);
       const size = Math.max(160, Math.min(520, available));
       setBoardSize(size);
@@ -603,7 +602,7 @@ export default function GamePage() {
       <EmojiBurst burst={emojiBurst} />
       {toast && <Toast msg={toast.msg} type={toast.type} />}
 
-      {/* ── HEADER — kept exactly as before ── */}
+      {/* ── HEADER ── */}
       <div
         style={{
           height: 46,
@@ -617,13 +616,9 @@ export default function GamePage() {
         }}>
         <button
           onClick={() => {
-            // NOTE: this dispatches a "GO_TO_PLAYER_SELECT" action so the
-            // back arrow lands on the player-select screen instead of the
-            // homepage. If your GameContext reducer/router uses a
-            // different action type or route for that screen, swap it in
-            // here (e.g. navigate('/select-players') for React Router).
-            if (confirm("Leave the game?"))
-              dispatch({ type: "SET_SCREEN", v: "home" });
+            // GO_BACK returns to whichever screen actually led here
+            // (normally Setup), not a hardcoded screen.
+            dispatch({ type: "GO_BACK" });
           }}
           style={{
             width: 36,
@@ -708,18 +703,7 @@ export default function GamePage() {
         </div>
       </div>
 
-      {/* ════════════════════════════════════════════════════
-          GAME AREA:
-          ┌──────────────────────────────────────┐
-          │ [TL: avatar+dice] [spacer] [TR: dice+avatar] │  ← top corners row
-          ├──────────────────────────────────────┤
-          │         LUDO BOARD (true square)      │  ← board sized in JS so
-          │                                        │    it's always a perfect
-          │                                        │    square, no letterboxing
-          ├──────────────────────────────────────┤
-          │ [BL: avatar+dice] [spacer] [BR: dice+avatar] │  ← bottom corners row
-          └──────────────────────────────────────┘
-      ════════════════════════════════════════════════════ */}
+      {/* GAME AREA */}
       <div
         ref={gameAreaRef}
         style={{
@@ -745,7 +729,6 @@ export default function GamePage() {
             paddingBottom: 2,
           }}>
           {renderCorner("tl")}
-          {/* score in the middle */}
           <div
             style={{
               display: "flex",
@@ -805,9 +788,7 @@ export default function GamePage() {
           {renderCorner("tr")}
         </div>
 
-        {/* BOARD — fixed pixel square, computed in JS via ResizeObserver so
-            the orange frame always hugs the board tightly with no extra
-            space above/below it. */}
+        {/* BOARD */}
         <div
           style={{
             width: boardSize,
@@ -860,7 +841,6 @@ export default function GamePage() {
           }}>
           {renderCorner("bl")}
           <div />
-          {/* spacer */}
           {renderCorner("br")}
         </div>
       </div>

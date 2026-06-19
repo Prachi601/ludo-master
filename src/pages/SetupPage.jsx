@@ -4,11 +4,16 @@ import { COLOR_HEX, COLOR_LABEL } from "../utils/gameLogic";
 
 const COLORS4 = ["red", "blue", "green", "yellow"];
 const COLORS2 = ["red", "blue"];
+const LOCAL_NAMES = ["Player 2", "Player 3", "Player 4"];
 
 export default function SetupPage() {
   const { state, dispatch } = useGame();
   const [mode, setMode] = useState(4);
   const [myColor, setColor] = useState("red");
+
+  // Fallback to vsComputer if somehow reached without a gameType set
+  const gameType = state.gameType || "vsComputer";
+  const isLocal = gameType === "local";
 
   // When mode changes, reset color selection to first available
   const handleMode = (m) => {
@@ -18,6 +23,8 @@ export default function SetupPage() {
   };
 
   const cols = mode === 4 ? COLORS4 : COLORS2;
+
+  const modeLabel = isLocal ? "Local Multiplayer" : "VS Computer";
 
   return (
     <div
@@ -40,11 +47,10 @@ export default function SetupPage() {
           display: "flex",
           flexDirection: "column",
           gap: 24,
-          // boxShadow: "0 24px 80px rgba(0,0,0,0.5)",
         }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <button
-            onClick={() => dispatch({ type: "SET_SCREEN", v: "home" })}
+            onClick={() => dispatch({ type: "GO_BACK" })}
             style={{
               background: "none",
               border: "none",
@@ -66,8 +72,8 @@ export default function SetupPage() {
               Game Setup
             </h2>
             <p style={{ color: "#9ca3af", fontSize: 13, marginTop: 2 }}>
-              Welcome,{" "}
-              <strong style={{ color: "#f5c842" }}>{state.username}</strong>!
+              {modeLabel} ·{" "}
+              <strong style={{ color: "#f5c842" }}>{state.username}</strong>
             </p>
           </div>
         </div>
@@ -140,66 +146,70 @@ export default function SetupPage() {
           </div>
         </div>
 
-        {/* Color selection */}
-        <div>
-          <p
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              letterSpacing: 2,
-              textTransform: "uppercase",
-              color: "#6b7280",
-              marginBottom: 10,
-            }}>
-            Your Color
-          </p>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: `repeat(${cols.length},1fr)`,
-              gap: 8,
-            }}>
-            {cols.map((c) => (
-              <div
-                key={c}
-                onClick={() => setColor(c)}
-                style={{
-                  background:
-                    myColor === c
-                      ? `${COLOR_HEX[c]}20`
-                      : "rgba(255,255,255,.04)",
-                  border: `2.5px solid ${myColor === c ? COLOR_HEX[c] : "rgba(255,255,255,.1)"}`,
-                  borderRadius: 12,
-                  padding: "14px 8px",
-                  textAlign: "center",
-                  cursor: "pointer",
-                  transition: "all .2s",
-                  boxShadow:
-                    myColor === c ? `0 0 16px ${COLOR_HEX[c]}55` : "none",
-                }}>
+        {/* Color selection — only relevant in VS Computer mode, since in
+            Local mode every seat is a human and colors are just assigned
+            in order */}
+        {!isLocal && (
+          <div>
+            <p
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: 2,
+                textTransform: "uppercase",
+                color: "#6b7280",
+                marginBottom: 10,
+              }}>
+              Your Color
+            </p>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: `repeat(${cols.length},1fr)`,
+                gap: 8,
+              }}>
+              {cols.map((c) => (
                 <div
+                  key={c}
+                  onClick={() => setColor(c)}
                   style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: "50%",
-                    background: COLOR_HEX[c],
-                    margin: "0 auto 8px",
-                    boxShadow: `0 0 12px ${COLOR_HEX[c]}99`,
-                  }}
-                />
-                <div
-                  style={{
-                    fontSize: 12,
-                    fontWeight: 700,
-                    fontFamily: "Rajdhani",
-                    color: myColor === c ? COLOR_HEX[c] : "#9ca3af",
+                    background:
+                      myColor === c
+                        ? `${COLOR_HEX[c]}20`
+                        : "rgba(255,255,255,.04)",
+                    border: `2.5px solid ${myColor === c ? COLOR_HEX[c] : "rgba(255,255,255,.1)"}`,
+                    borderRadius: 12,
+                    padding: "14px 8px",
+                    textAlign: "center",
+                    cursor: "pointer",
+                    transition: "all .2s",
+                    boxShadow:
+                      myColor === c ? `0 0 16px ${COLOR_HEX[c]}55` : "none",
                   }}>
-                  {COLOR_LABEL[c]}
+                  <div
+                    style={{
+                      width: 30,
+                      height: 30,
+                      borderRadius: "50%",
+                      background: COLOR_HEX[c],
+                      margin: "0 auto 8px",
+                      boxShadow: `0 0 12px ${COLOR_HEX[c]}99`,
+                    }}
+                  />
+                  <div
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 700,
+                      fontFamily: "Rajdhani",
+                      color: myColor === c ? COLOR_HEX[c] : "#9ca3af",
+                    }}>
+                    {COLOR_LABEL[c]}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Players preview */}
         <div
@@ -224,10 +234,18 @@ export default function SetupPage() {
             Players in this game
           </p>
           {cols.map((c, i) => {
-            const isMe = c === myColor;
-            const nm = isMe
-              ? state.username
-              : ["Arjun", "Meera", "Dev", "Sara"][i];
+            // Local: every seat is human. Seat 0 = the name from the home
+            // page, the rest get generic "Player N" names.
+            // VS Computer: only the chosen color is human, rest are CPU.
+            const isMe = isLocal ? i === 0 : c === myColor;
+            const nm = isLocal
+              ? i === 0
+                ? state.username
+                : LOCAL_NAMES[i - 1] || `Player ${i + 1}`
+              : isMe
+                ? state.username
+                : ["Arjun", "Meera", "Dev", "Sara"][i];
+            const tagLabel = isLocal ? `P${i + 1}` : isMe ? "YOU" : "CPU";
             return (
               <div
                 key={c}
@@ -265,20 +283,28 @@ export default function SetupPage() {
                     fontWeight: 800,
                     padding: "2px 8px",
                     borderRadius: 4,
-                    background: isMe
-                      ? "rgba(245,200,66,.18)"
-                      : "rgba(52,152,219,.15)",
-                    color: isMe ? "#f5c842" : "#1a8fe8",
-                    border: `1px solid ${isMe ? "rgba(245,200,66,.35)" : "rgba(26,143,232,.35)"}`,
+                    background: isLocal
+                      ? "rgba(120,120,160,.18)"
+                      : isMe
+                        ? "rgba(245,200,66,.18)"
+                        : "rgba(52,152,219,.15)",
+                    color: isLocal ? "#c7c7e0" : isMe ? "#f5c842" : "#1a8fe8",
+                    border: `1px solid ${
+                      isLocal
+                        ? "rgba(120,120,160,.35)"
+                        : isMe
+                          ? "rgba(245,200,66,.35)"
+                          : "rgba(26,143,232,.35)"
+                    }`,
                   }}>
-                  {isMe ? "YOU" : "CPU"}
+                  {tagLabel}
                 </span>
               </div>
             );
           })}
         </div>
 
-        {/* Start button — pass BOTH mode and myColor */}
+        {/* Start button — pass mode (+ myColor only matters for VS Computer) */}
         <button
           onClick={() => dispatch({ type: "START_GAME", mode, myColor })}
           style={{
@@ -295,7 +321,7 @@ export default function SetupPage() {
             cursor: "pointer",
             transition: "all .2s",
           }}>
-          🎮 Start {mode}-Player Game
+          🎮 Start {mode}-Player {isLocal ? "Local" : "Game"}
         </button>
       </div>
     </div>
