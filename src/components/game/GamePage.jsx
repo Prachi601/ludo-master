@@ -632,8 +632,7 @@ export default function GamePage() {
       style={{
         position: "fixed",
         inset: 0,
-        background:
-          "linear-gradient(180deg,#1565c0 0%,#0d47a1 50%,#1a237e 100%)",
+        background: "#24243f",
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
@@ -651,7 +650,7 @@ export default function GamePage() {
           alignItems: "center",
           justifyContent: "space-between",
           padding: "0 12px",
-          background: "rgba(0,0,0,0.25)",
+          background: "rgba(16, 15, 15, 0.25)",
           borderBottom: "1px solid rgba(255,255,255,0.1)",
         }}>
         <button
