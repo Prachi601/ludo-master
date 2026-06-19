@@ -32,7 +32,7 @@ export default function SetupPage() {
       <div
         style={{
           background: "rgba(36,38,64,0.98)",
-          border: "1px solid rgba(255,255,255,0.12)",
+          border: "none",
           borderRadius: 20,
           padding: "36px 40px",
           width: "100%",
@@ -40,7 +40,7 @@ export default function SetupPage() {
           display: "flex",
           flexDirection: "column",
           gap: 24,
-          boxShadow: "0 24px 80px rgba(0,0,0,0.5)",
+          // boxShadow: "0 24px 80px rgba(0,0,0,0.5)",
         }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <button
@@ -207,12 +207,13 @@ export default function SetupPage() {
             background: "rgba(255,255,255,.04)",
             borderRadius: 12,
             padding: 14,
-            display: "flex",
-            flexDirection: "column",
-            gap: 7,
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 8,
           }}>
           <p
             style={{
+              gridColumn: "1 / -1",
               fontSize: 10,
               fontWeight: 700,
               letterSpacing: 1.5,
@@ -233,7 +234,7 @@ export default function SetupPage() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: 10,
+                  gap: 5,
                   padding: "7px 12px",
                   borderRadius: 8,
                   border: `1px solid ${COLOR_HEX[c]}44`,
