@@ -1,8 +1,14 @@
 // import React, { createContext, useContext, useReducer } from "react";
 
 // const Ctx = createContext(null);
-// const BOT_NAMES = ["Arjun", "Meera", "Dev", "Sara"];
-// const LOCAL_NAMES = ["Player 2", "Player 3", "Player 4"];
+// const BOT_NAMES = ["Arjun", "Meera", "Dev", "Sara", "Kabir", "Isha"];
+// const LOCAL_NAMES = [
+//   "Player 2",
+//   "Player 3",
+//   "Player 4",
+//   "Player 5",
+//   "Player 6",
+// ];
 
 // const mkTokens = () => ({
 //   red: [
@@ -24,6 +30,18 @@
 //     { pos: -1, finished: false },
 //   ],
 //   yellow: [
+//     { pos: -1, finished: false },
+//     { pos: -1, finished: false },
+//     { pos: -1, finished: false },
+//     { pos: -1, finished: false },
+//   ],
+//   purple: [
+//     { pos: -1, finished: false },
+//     { pos: -1, finished: false },
+//     { pos: -1, finished: false },
+//     { pos: -1, finished: false },
+//   ],
+//   orange: [
 //     { pos: -1, finished: false },
 //     { pos: -1, finished: false },
 //     { pos: -1, finished: false },
@@ -71,7 +89,6 @@
 //       return goTo(s, a.v);
 
 //     // Generic "back" — pops the last screen off the history stack.
-//     // Falls back to 'home' if there's nowhere left to go.
 //     case "GO_BACK": {
 //       if (s.screenHistory.length === 0) return { ...s, screen: "home" };
 //       const hist = [...s.screenHistory];
@@ -89,9 +106,10 @@
 //     case "START_GAME": {
 //       // a.mode and a.myColor are both passed from SetupPage
 //       const mode = a.mode || 4;
-//       const cols4 = ["red", "blue", "green", "yellow"];
 //       const cols2 = ["red", "blue"];
-//       const cols = mode === 2 ? cols2 : cols4;
+//       const cols4 = ["red", "blue", "green", "yellow"];
+//       const cols6 = ["red", "blue", "green", "yellow", "purple", "orange"];
+//       const cols = mode === 2 ? cols2 : mode === 6 ? cols6 : cols4;
 
 //       let players;
 //       if (s.gameType === "local") {
@@ -150,9 +168,7 @@
 //       const { color, idx, newPos, captured, extra } = a;
 //       let tokens = { ...s.tokens };
 //       tokens[color] = tokens[color].map((t, i) =>
-//         i !== idx
-//           ? t
-//           : { ...t, pos: newPos >= 57 ? 57 : newPos, finished: newPos >= 57 },
+//         i !== idx ? t : { ...t, pos: newPos, finished: a.isHome },
 //       );
 //       if (captured) {
 //         tokens[captured.capColor] = tokens[captured.capColor].map((t, i) =>
@@ -210,14 +226,8 @@
 import React, { createContext, useContext, useReducer } from "react";
 
 const Ctx = createContext(null);
-const BOT_NAMES = ["Arjun", "Meera", "Dev", "Sara", "Kabir", "Isha"];
-const LOCAL_NAMES = [
-  "Player 2",
-  "Player 3",
-  "Player 4",
-  "Player 5",
-  "Player 6",
-];
+const BOT_NAMES = ["Arjun", "Meera", "Dev", "Sara"];
+const LOCAL_NAMES = ["Player 2", "Player 3", "Player 4"];
 
 const mkTokens = () => ({
   red: [
@@ -239,18 +249,6 @@ const mkTokens = () => ({
     { pos: -1, finished: false },
   ],
   yellow: [
-    { pos: -1, finished: false },
-    { pos: -1, finished: false },
-    { pos: -1, finished: false },
-    { pos: -1, finished: false },
-  ],
-  purple: [
-    { pos: -1, finished: false },
-    { pos: -1, finished: false },
-    { pos: -1, finished: false },
-    { pos: -1, finished: false },
-  ],
-  orange: [
     { pos: -1, finished: false },
     { pos: -1, finished: false },
     { pos: -1, finished: false },
@@ -315,23 +313,24 @@ function reducer(s, a) {
     case "START_GAME": {
       // a.mode and a.myColor are both passed from SetupPage
       const mode = a.mode || 4;
-      const cols2 = ["red", "blue"];
       const cols4 = ["red", "blue", "green", "yellow"];
-      const cols6 = ["red", "blue", "green", "yellow", "purple", "orange"];
-      const cols = mode === 2 ? cols2 : mode === 6 ? cols6 : cols4;
+      const cols2 = ["red", "blue"];
+      const cols = mode === 2 ? cols2 : cols4;
 
       let players;
       if (s.gameType === "local") {
         // Local multiplayer: every seat is a real human on this device.
-        // Seat 0 keeps the name entered on the home page, the rest get
-        // generic "Player N" names (could be made editable later).
-        players = cols.map((color, i) => ({
-          id: `p${i}`,
-          username:
-            i === 0 ? s.username : LOCAL_NAMES[i - 1] || `Player ${i + 1}`,
-          color,
-          isBot: false,
-        }));
+        // Whichever color you picked on Setup is your seat (host); every
+        // other seat is filled with another local player in turn.
+        let localSeat = 1;
+        players = cols.map((color) => {
+          if (color === a.myColor) {
+            return { id: "p0", username: s.username, color, isBot: false };
+          }
+          const nm = LOCAL_NAMES[localSeat - 1] || `Player ${localSeat + 1}`;
+          localSeat++;
+          return { id: `p${localSeat}`, username: nm, color, isBot: false };
+        });
       } else {
         // VS Computer (and fallback default): only the chosen color is
         // human, everyone else is a CPU-controlled bot.
@@ -377,7 +376,9 @@ function reducer(s, a) {
       const { color, idx, newPos, captured, extra } = a;
       let tokens = { ...s.tokens };
       tokens[color] = tokens[color].map((t, i) =>
-        i !== idx ? t : { ...t, pos: newPos, finished: a.isHome },
+        i !== idx
+          ? t
+          : { ...t, pos: newPos >= 57 ? 57 : newPos, finished: newPos >= 57 },
       );
       if (captured) {
         tokens[captured.capColor] = tokens[captured.capColor].map((t, i) =>
